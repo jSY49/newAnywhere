@@ -1,6 +1,7 @@
 package com.example.newanywhere
 
 import android.os.Bundle
+import androidx.appcompat.app.ActionBar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -18,6 +19,11 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val actionBar=  supportActionBar
+        actionBar!!.hide()
+
+
 
         val navView: BottomNavigationView = binding.navView
 
