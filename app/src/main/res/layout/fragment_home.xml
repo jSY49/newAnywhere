@@ -11,6 +11,7 @@
         android:layout_height="wrap_content">
 
         <View
+            android:background="#B8B6B6"
             android:id="@+id/topView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -23,7 +24,7 @@
         <HorizontalScrollView
             android:id="@+id/horizon_Scrollview"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="60dp"
             android:layout_marginTop="15dp"
             android:paddingHorizontal="20dp"
             android:scrollbars="none"
@@ -32,11 +33,20 @@
             app:layout_constraintTop_toBottomOf="@+id/topView">
 
             <LinearLayout
-                android:id="@+id/linear_inScrollview"
+                android:id="@+id/linearLay_in_hScroll"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
+<!--
+                <Button
+                    android:id="@+id/btn1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/area_button"/>
+-->
 
             </LinearLayout>
         </HorizontalScrollView>
