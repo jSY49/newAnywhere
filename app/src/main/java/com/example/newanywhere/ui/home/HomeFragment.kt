@@ -1,22 +1,19 @@
 package com.example.newanywhere.ui.home
 
-import android.graphics.drawable.Drawable
+import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.RadioButton
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.core.view.marginRight
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.newanywhere.R
-import com.example.newanywhere.Retrofit.AreaCode
 import com.example.newanywhere.Retrofit.Item
 import com.example.newanywhere.databinding.FragmentHomeBinding
 
@@ -27,6 +24,7 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel :HomeViewModel
     var areaCodeNum = 0
     var area = ArrayList<Item>()
+    var clickedAreaId = 1
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,7 +36,7 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
 
-        homeViewModel.Arearefresh()
+        homeViewModel.refresh(0,0)
         observeAreaCodeNum()
 
         return root
@@ -57,27 +55,43 @@ class HomeFragment : Fragment() {
             for(i in 0 until areaCodeNum){
                 setRegionButton(i)
             }
+            binding.RadioInHScroll.check(clickedAreaId)
+
+            homeViewModel.refresh(clickedAreaId,1)
+            observeTourData()
         })
     }
     fun setRegionButton( index :Int){
 
-        var btn =  Button(context).apply {
+        val btn =  RadioButton(context).apply {
             val lp = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             lp.setMargins(10, 5, 10, 5)
-
             layoutParams = lp
-            background = getDrawable(context,R.drawable.area_button)
-            text = area.get(index).name
+            background = getDrawable(context,R.drawable.radio_select)
+            text = "#${area.get(index).name}"
             setOnClickListener {
                 Log.d("HomeFragment","setRegionButton : ${area.get(index)}")
             }
         }
-        btn.setPadding(10,0,10,0)
-        binding.linearLayInHScroll.addView(btn)
+        btn.buttonDrawable = StateListDrawable() // radio button 에서 원을 삭제하기.
+        btn.setPadding(25,15,25,15)
+        binding.RadioInHScroll.addView(btn)
+
+        if(index==0){
+            clickedAreaId = btn.id
+        }
+
     }
+
+    fun observeTourData(){
+        homeViewModel.TourData.observe(viewLifecycleOwner,Observer{
+            //리사이클러뷰 데이터 세팅 해주기
+        })
+    }
+
     fun getDPI(dp: Int): Int {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics)
             .toInt()
