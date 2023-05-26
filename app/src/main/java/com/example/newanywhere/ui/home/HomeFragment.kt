@@ -1,5 +1,6 @@
 package com.example.newanywhere.ui.home
 
+import android.annotation.SuppressLint
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.util.Log
@@ -13,87 +14,111 @@ import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newanywhere.R
 import com.example.newanywhere.Retrofit.Item
+import com.example.newanywhere.Retrofit.listItem
 import com.example.newanywhere.databinding.FragmentHomeBinding
+import com.example.newanywhere.itemAdapater
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var homeViewModel :HomeViewModel
+    private lateinit var homeViewModel: HomeViewModel
     var areaCodeNum = 0
     var area = ArrayList<Item>()
+    var list = ArrayList<listItem>()
     var clickedAreaId = 1
+    private var myItemAdpater = itemAdapater(arrayListOf())
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeViewModel =ViewModelProvider(this).get(HomeViewModel::class.java)
+        homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
-        homeViewModel.refresh(0,0)
-        observeAreaCodeNum()
+        setRecyclerView()   //adapter 등록
+        homeViewModel.refresh(0, 0)  //id=0 , 지역코드 가져오기
+        observe()    //데이터observe
 
         return root
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    fun observeAreaCodeNum(){
+    private fun setRecyclerView() {
+        binding.itemRecyclerview.layoutManager
+
+        binding.itemRecyclerview.apply {
+            layoutManager = LinearLayoutManager(context).also {
+                it.orientation = LinearLayoutManager.VERTICAL
+            }
+            adapter = myItemAdpater
+        }
+    }
+
+    fun observe() {
         homeViewModel.AreaCodedata.observe(viewLifecycleOwner, Observer {
-            areaCodeNum = it.response.body.totalCount
-            area.addAll(it.response.body.items.item)
+            areaCodeNum = it.response.body.totalCount   //총 지역 수
+            area.addAll(it.response.body.items.item)    //list에 추가
             //버튼 생성
-            for(i in 0 until areaCodeNum){
+            for (i in 0 until areaCodeNum) {
                 setRegionButton(i)
             }
-            binding.RadioInHScroll.check(clickedAreaId)
+            binding.RadioInHScroll.check(clickedAreaId) //현재 선택 라디오 check
+            homeViewModel.refresh(
+                clickedAreaId,
+                it.response.body.items.item.get(0).code.toInt()
+            )  //처음 데이터 가져오기
+        })
 
-            homeViewModel.refresh(clickedAreaId,1)
-            observeTourData()
+        homeViewModel.TourData.observe(viewLifecycleOwner, Observer {
+            //리사이클러뷰 데이터 세팅 해주기
+            setRecycler(it)
         })
     }
-    fun setRegionButton( index :Int){
 
-        val btn =  RadioButton(context).apply {
+    @SuppressLint("SetTextI18n")
+    fun setRegionButton(index: Int) {
+
+        val btn = RadioButton(context).apply {
             val lp = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             lp.setMargins(10, 5, 10, 5)
             layoutParams = lp
-            background = getDrawable(context,R.drawable.radio_select)
-            text = "#${area.get(index).name}"
+            background = getDrawable(context, R.drawable.radio_select)
+            text = "#${area[index].name}"
             setOnClickListener {
-                Log.d("HomeFragment","setRegionButton : ${area.get(index)}")
+                Log.d("HomeFragment","setRegionButton : ${area[index]}")
+                list.clear()
+                homeViewModel.refresh(area[index].code.toInt(), 1)
             }
         }
         btn.buttonDrawable = StateListDrawable() // radio button 에서 원을 삭제하기.
-        btn.setPadding(25,15,25,15)
+        btn.setPadding(25, 15, 25, 15)
         binding.RadioInHScroll.addView(btn)
 
-        if(index==0){
+        if (index == 0) {
             clickedAreaId = btn.id
         }
 
     }
 
-    fun observeTourData(){
-        homeViewModel.TourData.observe(viewLifecycleOwner,Observer{
-            //리사이클러뷰 데이터 세팅 해주기
-        })
-    }
-
-    fun getDPI(dp: Int): Int {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics)
-            .toInt()
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setRecycler(it: List<listItem>) {
+        list.addAll(it)
+        myItemAdpater.updateitems(list)
+        myItemAdpater.notifyDataSetChanged()
     }
 }

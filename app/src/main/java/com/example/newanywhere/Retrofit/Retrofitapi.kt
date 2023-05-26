@@ -52,6 +52,8 @@ interface Tour_Interface {
         MobileApp: String = "Anywhere",
         @Query("arrange")
         arrange: String = "O",
+        @Query("contentTypeId")
+        contentTypeId: String = "12",
 
     ): Response<list>
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.newanywhere.Retrofit.AreaCode
 import com.example.newanywhere.Retrofit.RetrofitClient
 import com.example.newanywhere.Retrofit.list
+import com.example.newanywhere.Retrofit.listItem
 import kotlinx.coroutines.*
 
 class HomeViewModel : ViewModel() {
@@ -14,13 +15,13 @@ class HomeViewModel : ViewModel() {
     private val TourService = RetrofitClient.Tour_Service()
 //    var AreaCodedata = MutableLiveData<String>()
     var AreaCodedata = MutableLiveData<AreaCode>()
-    var TourData = MutableLiveData<list>()
+    var TourData = MutableLiveData<List<listItem>>()
     val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
         onError("Exception: ${throwable.localizedMessage}")
     }
     val LoadError = MutableLiveData<String?>()
     fun refresh(areaCode: Int,id :Int) {
-        if(id == 0 ){
+        if(id == 0){
             getAreaCode()
         }else if(id ==1){
             getTour(areaCode.toString())
@@ -50,7 +51,7 @@ class HomeViewModel : ViewModel() {
             val res = TourService.getTour(areaCode)
             withContext(Dispatchers.Main) {
                 if (res.isSuccessful) {
-                    TourData.postValue(res.body())
+                    TourData.postValue(res.body()?.response?.body?.items?.item)
                     Log.d("HomeViewModel","getTour : ${res}")
 //                    AreaCodedata.postValue(res.body())
                 } else {
