@@ -11,10 +11,10 @@
         android:layout_height="wrap_content">
 
         <View
-            android:background="#B8B6B6"
             android:id="@+id/topView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="#B8B6B6"
             app:layout_constraintDimensionRatio="1:0.5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -36,9 +36,9 @@
                 android:id="@+id/Radio_in_hScroll"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
-            </RadioGroup>
+                android:orientation="horizontal"/>
         </HorizontalScrollView>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/item_recyclerview"

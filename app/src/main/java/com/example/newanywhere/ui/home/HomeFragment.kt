@@ -20,6 +20,7 @@ import com.example.newanywhere.Retrofit.Item
 import com.example.newanywhere.Retrofit.listItem
 import com.example.newanywhere.databinding.FragmentHomeBinding
 import com.example.newanywhere.itemAdapater
+import com.example.newanywhere.progressDialog
 
 class HomeFragment : Fragment() {
 
@@ -31,7 +32,7 @@ class HomeFragment : Fragment() {
     var list = ArrayList<listItem>()
     var clickedAreaId = 1
     private var myItemAdpater = itemAdapater(arrayListOf())
-
+    lateinit var dialog : progressDialog
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,6 +43,10 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+
+        dialog = context?.let { progressDialog(it) } !!
+
+        dialog.show()
         setRecyclerView()   //adapter 등록
         homeViewModel.refresh(0, 0)  //id=0 , 지역코드 가져오기
         observe()    //데이터observe
@@ -84,6 +89,7 @@ class HomeFragment : Fragment() {
         homeViewModel.TourData.observe(viewLifecycleOwner, Observer {
             //리사이클러뷰 데이터 세팅 해주기
             setRecycler(it)
+            dialog.dismiss()
         })
     }
 
@@ -101,6 +107,9 @@ class HomeFragment : Fragment() {
             text = "#${area[index].name}"
             setOnClickListener {
                 Log.d("HomeFragment","setRegionButton : ${area[index]}")
+
+                dialog.show()
+
                 list.clear()
                 homeViewModel.refresh(area[index].code.toInt(), 1)
             }

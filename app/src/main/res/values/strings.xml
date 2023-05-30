@@ -7,4 +7,6 @@
     <string name="title_map">Map</string>
     <string name="title_user">User</string>
 
+    <string name="loading">로딩중..</string>
+
 </resources>
