@@ -1,12 +1,17 @@
 package com.example.newanywhere
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.newanywhere.Retrofit.listItem
 import com.example.newanywhere.databinding.ItemLayoutBinding
+
 
 class itemAdapater(private var data: ArrayList<listItem>) :
     RecyclerView.Adapter<itemAdapater.MyViewHolder>() {
@@ -34,11 +39,11 @@ class itemAdapater(private var data: ArrayList<listItem>) :
                 .into(binding.imageView)
 
             itemView.setOnClickListener{
-//                val intent = Intent(context, itemDetailActivity::class.java)
-//                intent.putExtra("itemId",currentitem.id)
-//                intent.run{
-//                    context.startActivity(this)
-//                }
+                val intent = Intent(context, ItemDetailActivity::class.java)
+                intent.putExtra("itemId",currentitem.contentid)
+                intent.run{
+                    context.startActivity(this)
+                }
 
             }
 
