@@ -36,56 +36,18 @@ class MainActivity : AppCompatActivity() {
         actionBar!!.hide()
 
 
-        initBottomNav()
+        val navView: BottomNavigationView = binding.navView
 
-//        val navView: BottomNavigationView = binding.navView
-//
-//        val navController = findNavController(R.id.nav_host_fragment_activity_main)
-//        // Passing each menu ID as a set of Ids because each
-//        // menu should be considered as top level destinations.
-//        val appBarConfiguration = AppBarConfiguration(
-//            setOf(
-//                R.id.navigation_home, R.id.navigation_list, R.id.navigation_map, R.id.navigation_search,R.id.navigation_user
-//            )
-//        )
-////        setupActionBarWithNavController(navController, appBarConfiguration)
-//        navView.setupWithNavController(navController)
+        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        val appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.navigation_home, R.id.navigation_list, R.id.navigation_map, R.id.navigation_search,R.id.navigation_user
+            )
+        )
+//        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
     }
 
-    private fun initBottomNav() {
-
-        homeFragment= HomeFragment()
-        fragmentManager.beginTransaction().replace(R.id.nav_host_fragment_activity_main,homeFragment!!).commit()
-
-        binding.navView.setOnItemSelectedListener {
-            when(it.itemId){
-                R.id.navigation_home->{
-                    if(homeFragment==null){
-                        homeFragment=HomeFragment()
-                        fragmentManager.beginTransaction().add(R.id.nav_host_fragment_activity_main,homeFragment!!).commit()
-                    }
-                    else if(homeFragment!=null) fragmentManager.beginTransaction().show(homeFragment!!).commit()
-                    return@setOnItemSelectedListener true
-                }
-                R.id.navigation_list->{
-
-                    return@setOnItemSelectedListener true
-                }
-                R.id.navigation_map->{
-                    return@setOnItemSelectedListener true
-                }
-                R.id.navigation_search->{
-                    return@setOnItemSelectedListener true
-                }
-                R.id.navigation_user->{
-
-                    return@setOnItemSelectedListener true
-                }
-                else ->{
-                    return@setOnItemSelectedListener true
-                }
-            }
-        }
-
-    }
 }
