@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
 
         dialog = context?.let { progressDialog(it) } !!
 
-        dialog.show()
+//        dialog.show()
         setRecyclerView()   //adapter 등록
         homeViewModel.refresh(0, 0)  //id=0 , 지역코드 가져오기
         observe()    //데이터observe
