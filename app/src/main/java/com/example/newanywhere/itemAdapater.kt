@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.newanywhere.Retrofit.listItem
@@ -39,7 +37,7 @@ class itemAdapater(private var data: ArrayList<listItem>) :
                 .into(binding.imageView)
 
             itemView.setOnClickListener{
-                val intent = Intent(context, ItemDetailActivity::class.java)
+                val intent = Intent(context, DetailItemActivity::class.java)
                 intent.putExtra("itemId",currentitem.contentid)
                 intent.run{
                     context.startActivity(this)
