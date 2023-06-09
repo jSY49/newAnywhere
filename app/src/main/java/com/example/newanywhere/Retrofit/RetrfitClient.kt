@@ -28,4 +28,5 @@ object RetrofitClient{
     }
     fun AreaCode_Service(): AreaCode_Interface = getRetrofit().create(AreaCode_Interface::class.java)
     fun Tour_Service(): Tour_Interface = getRetrofit().create(Tour_Interface::class.java)
+    fun Detail_Service(): Detail_Interface = getRetrofit().create(Detail_Interface::class.java)
 }
