@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.NewAnywhere" parent="Theme.AppCompat.DayNight">
+    <style name="Theme.NewAnywhere" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/lightBlue</item>
         <item name="colorPrimaryVariant">@color/littlelightBlue</item>
@@ -10,7 +10,27 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item><!--Status Bar의 배경색-->
         <!-- Customize your theme here. -->
+
     </style>
+
+
+    <style name="Theme.NewAnywhere.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.NewAnywhere.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.NewAnywhere.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
+        <item name="titleTextAppearance">@style/ToolbarTitleStyle.Dark</item> <!-- Toolbar의 타이틀 텍스트-->
+    </style>
+
+    <!-- Toolbar의 타이틀 텍스트-->
+    <style name="ToolbarTitleStyle.Dark" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textColor">@color/black</item> <!-- Toolbar의 타이틀 텍스트 색상-->
+        <item name="android:textSize">25sp</item>
+    </style>
+
+
 </resources>

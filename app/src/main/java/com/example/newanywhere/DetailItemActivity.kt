@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.newanywhere.Retrofit.Detail
 import com.example.newanywhere.Retrofit.DetailItem
 import com.example.newanywhere.databinding.ActivityItemDetailBinding
@@ -21,8 +22,12 @@ class DetailItemActivity : AppCompatActivity() {
         binding = ActivityItemDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        actionBar= supportActionBar!!
         val itemId = intent.getStringExtra("itemId")
+
+
+        binding.toolbarLayout.setExpandedTitleTextAppearance(R.style.ToolbarTitleStyle_Dark)
+        binding.toolbarLayout.setCollapsedTitleTextAppearance(R.style.ToolbarTitleStyle_Dark)
+
 
         vm = ViewModelProvider(this).get(DetailItemViewModel::class.java)
 
@@ -30,13 +35,19 @@ class DetailItemActivity : AppCompatActivity() {
             vm.refresh(itemId)
         }
         observe()
+
 //        actionBar!!.title = itemId
 
     }
 
     private fun observe() {
         vm.data.observe(this, Observer {
-            actionBar!!.title = it.title
+            binding.toolbarLayout.title = it.title
+            Glide.with(this).load(it.firstimage)
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .centerCrop()
+                .into(binding.itemImage)
+            binding.itemImage
         })
     }
 }
